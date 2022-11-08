@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"strconv"
@@ -14,13 +13,13 @@ import (
 
 	"github.com/libp2p/go-reuseport"
 
-	"gortc.io/stun"
+	"github.com/pion/stun"
 )
 
 func main() {
 	args := parseCliArgs()
 	if !args.trace {
-		log.SetOutput(ioutil.Discard)
+		log.SetOutput(io.Discard)
 	}
 	if !reuseport.Available() {
 		log.Println("Port reuse not available")
@@ -60,7 +59,7 @@ func runConnection(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 	}
 	defer conn.Close()
 	go printAddress(myCtx, dialer, stunAddress)
-	go io.Copy(ioutil.Discard, conn)
+	go io.Copy(io.Discard, conn)
 	tick := time.Tick(time.Second * 5)
 	for {
 		select {
