@@ -22,7 +22,7 @@ func parseCliArgs() (args appOptions) {
 	flagSet = flag.NewFlagSet(programName, flag.ContinueOnError)
 	flagSet.BoolVar(&args.trace, "trace", false, "Trace output")
 
-	flagSet.StringVar(&args.webSocketEchoURL, "ws-url", "wss://echo.websocket.org", "Websocket echo server url")
+	flagSet.StringVar(&args.webSocketEchoURL, "ws-url", "wss://ws.vi-server.org/mirror", "Websocket echo server url")
 	flagSet.StringVar(&args.bindAddress, "bind-address", ":7203", "Bind address")
 	flagSet.StringVar(&args.stunAddress, "stun-address", "stun.sipnet.net:3478", "Stun server address")
 
