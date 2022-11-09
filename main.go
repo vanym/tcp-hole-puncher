@@ -80,7 +80,7 @@ func runConnection(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 		case <-tick:
 			break
 		}
-		_, err = conn.Write([]byte(strconv.FormatInt(time.Now().Unix(), 10)))
+		_, err = conn.Write([]byte(strconv.FormatInt(time.Now().Unix(), 10) + "\n"))
 		if err != nil {
 			log.Println("Can't write to websocket", err)
 			return

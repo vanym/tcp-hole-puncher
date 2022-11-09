@@ -16,7 +16,7 @@ type appOptions struct {
 var flagSet *flag.FlagSet
 
 const programName string = "tcp-hole-puncher"
-const version string = "0.1.2"
+const version string = "0.1.3"
 
 func parseCliArgs() (args appOptions) {
 	flagSet = flag.NewFlagSet(programName, flag.ContinueOnError)
