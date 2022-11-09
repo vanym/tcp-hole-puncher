@@ -16,15 +16,15 @@ type appOptions struct {
 var flagSet *flag.FlagSet
 
 const programName string = "tcp-hole-puncher"
-const version string = "0.1.3"
+const version string = "0.1.4"
 
 func parseCliArgs() (args appOptions) {
 	flagSet = flag.NewFlagSet(programName, flag.ContinueOnError)
 	flagSet.BoolVar(&args.trace, "trace", false, "Trace output")
 
 	flagSet.StringVar(&args.webSocketEchoURL, "ws-url", "wss://ws.vi-server.org/mirror", "Websocket echo server url")
-	flagSet.StringVar(&args.bindAddress, "bind-address", ":7203", "Bind address")
-	flagSet.StringVar(&args.stunAddress, "stun-address", "stun.sipnet.net:3478", "Stun server address")
+	flagSet.StringVar(&args.bindAddress, "bind", ":7203", "Bind address")
+	flagSet.StringVar(&args.stunAddress, "stun", "stun.sipnet.net:3478", "Stun server address")
 
 	pVersion := flagSet.Bool("version", false, "Print version")
 
