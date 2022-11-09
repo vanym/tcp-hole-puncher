@@ -110,7 +110,7 @@ func getAddress(ctx context.Context, dialer *net.Dialer, stunAddress string) (ad
 			return
 		}
 		var xorAddr stun.XORMappedAddress
-		if suberr := xorAddr.GetFrom(res.Message); err != nil {
+		if suberr := xorAddr.GetFrom(res.Message); suberr != nil {
 			err = suberr
 			log.Println("Can't get address from stun message", err)
 			return
