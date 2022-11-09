@@ -58,10 +58,21 @@ func runConnection(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 		return
 	}
 	defer conn.Close()
-	go printAddress(myCtx, dialer, stunAddress)
 	go io.Copy(io.Discard, conn)
+	var stunerr error = io.ErrNoProgress
 	tick := time.Tick(time.Second * 5)
 	for {
+		if stunerr != nil {
+			stunCtx, stunCtxCancel := context.WithTimeout(myCtx, 10*time.Second)
+			var addr net.Addr
+			addr, stunerr = getAddress(stunCtx, dialer, stunAddress)
+			if stunerr != nil {
+				log.Println("Can't get address", stunerr)
+			} else {
+				fmt.Println(addr)
+			}
+			stunCtxCancel()
+		}
 		select {
 		case <-myCtx.Done():
 			log.Println("Run connection context expired", myCtx.Err())
@@ -75,15 +86,6 @@ func runConnection(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 			return
 		}
 	}
-}
-
-func printAddress(ctx context.Context, dialer *net.Dialer, stunAddress string) {
-	addr, err := getAddress(ctx, dialer, stunAddress)
-	if err != nil {
-		log.Println("Can't get address", err)
-		return
-	}
-	fmt.Println(addr)
 }
 
 func getAddress(ctx context.Context, dialer *net.Dialer, stunAddress string) (addr net.Addr, err error) {
