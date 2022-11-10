@@ -7,7 +7,7 @@ tcp-hole-puncher is a tool to get connections behind nat
 ### Run tcp-hole-puncher
 
 ```
-tcp-hole-puncher --bind-address ":7203"
+tcp-hole-puncher --bind ":7203"
 ```
 You will get address:port in stdout
 
