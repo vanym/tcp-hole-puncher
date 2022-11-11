@@ -32,6 +32,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Can't resolve bind address", args.bindAddress, err)
 		return
 	}
+	log.Println("Using address:", bindAddr)
 	dialer := &net.Dialer{
 		Control:   reuseport.Control,
 		LocalAddr: bindAddr,
