@@ -1,0 +1,9 @@
+*
+hole-maker.pid
+address.txt
+
+!.gitignore
+!run-hole-maker.sh
+!start-hole-maker.sh
+!stop-hole-maker.sh
+!handle-address.sh
