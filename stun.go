@@ -147,6 +147,7 @@ func getAddress(ctx context.Context, dialer *net.Dialer, stunAddress string) (ad
 			IP:   xorAddr.IP,
 			Port: xorAddr.Port,
 		}
+		log.Println("Got", addr, "from", stunAddress)
 	})
 	if err2 != nil {
 		err = err2
