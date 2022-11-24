@@ -28,7 +28,7 @@ type appOptions struct {
 var flagSet *flag.FlagSet
 
 const programName string = "tcp-hole-puncher"
-const version string = "0.2.1"
+const version string = "0.2.2"
 
 var defaultBind = ":7203"
 var defaultWsUrls = [...]string{

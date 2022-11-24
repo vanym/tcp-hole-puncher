@@ -7,6 +7,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"sync"
 	"time"
 
 	"github.com/libp2p/go-reuseport"
@@ -37,27 +39,41 @@ func main() {
 		Control:   reuseport.Control,
 		LocalAddr: bindAddr,
 	}
-	ctx := context.Background()
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
 	nurls := len(args.webSocketEchoURLs)
 	connectTimeCh := make(chan time.Time, nurls*16)
 	writeTimeCh := make(chan time.Time)
+	var wg sync.WaitGroup
 	for _, webSocketEchoURL := range args.webSocketEchoURLs {
-		go webSocketLoop(ctx, dialer, webSocketEchoURL, connectTimeCh, writeTimeCh)
+		wg.Add(1)
+		go func(webSocketEchoURL string) {
+			webSocketLoop(ctx, dialer, webSocketEchoURL, connectTimeCh, writeTimeCh)
+			wg.Done()
+		}(webSocketEchoURL)
 	}
 	stuns := make(stunsHolder, len(args.stunAddresses))
 	copy(stuns, args.stunAddresses)
 	var lastTime time.Time
 	var stunerr error
 	tick := time.Tick(time.Second)
+loop:
 	for {
 		if stunerr == nil {
-			conTime := <-connectTimeCh
+			var conTime time.Time
+			select {
+			case <-ctx.Done():
+				break loop
+			case conTime = <-connectTimeCh:
+			}
 			if !conTime.After(lastTime) {
 				continue
 			}
 			time.Sleep(time.Second)
 		} else {
 			select {
+			case <-ctx.Done():
+				break loop
 			case <-writeTimeCh:
 			case <-connectTimeCh:
 			}
@@ -73,4 +89,7 @@ func main() {
 		lastTime = checkTime
 		fmt.Println(addr)
 	}
+	log.Println("Waiting connections to close...")
+	wg.Wait()
+	log.Println("Exiting...")
 }

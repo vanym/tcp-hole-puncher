@@ -53,9 +53,11 @@ func (h *stunsHolder) getAddress(ctx context.Context, dialer *net.Dialer) (net.A
 				if err != nil {
 					addr = nil
 					subBads = append(subBads, &(*h)[i])
-
 				} else {
 					subLastTime = time.Now()
+				}
+				if ctx.Err() != nil {
+					break
 				}
 			}
 			mu.Lock()

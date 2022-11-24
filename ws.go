@@ -15,7 +15,14 @@ func webSocketLoop(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 	tick := time.Tick(4 * time.Second)
 	for {
 		runConnection(ctx, dialer, webSocketEchoURL, connectTimeCh, writeTimeCh)
-		<-tick
+		if ctx.Err() != nil {
+			return
+		}
+		select {
+		case <-ctx.Done():
+			return
+		case <-tick:
+		}
 	}
 }
 
@@ -42,7 +49,7 @@ func runConnection(ctx context.Context, dialer *net.Dialer, webSocketEchoURL str
 	for {
 		select {
 		case <-myCtx.Done():
-			log.Println("Run connection context expired", myCtx.Err())
+			log.Println("Connection", webSocketEchoURL, "context expired", myCtx.Err())
 			return
 		case <-tick:
 			break
