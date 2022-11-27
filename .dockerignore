@@ -1,3 +1,6 @@
+**/*.md
+Dockerfile
+docker-compose.yml
 hole-maker.pid
 address.txt
 tcp-hole-puncher

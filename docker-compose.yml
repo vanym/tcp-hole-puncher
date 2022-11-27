@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  tcp_hole:
+    build: .
+#    image: vanym/tcp-hole-puncher:latest
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "./handler:/app/handler" # address.txt will be there
+    environment:
+#      - "TCP_HOLE_ADDRESS_HANDLER=/app/handler/handler.sh"
+      - "TCP_HOLE_PORT=7203"
+      - "TCP_HOLE_REDIR_PORT=8080"
