@@ -34,6 +34,13 @@ socat tcp-listen:7203,reuseaddr,reuseport,fork tcp-connect:127.0.0.1:8080
 Make sure that port is opened in your router nat
 
 ## Installation
+
+#### Using go install
+```
+go install github.com/vanym/tcp-hole-puncher@latest
+```
+
+#### By cloning repository
 ```
 git clone https://github.com/vanym/tcp-hole-puncher.git
 cd tcp-hole-puncher
@@ -76,4 +83,4 @@ Configure ports as environment variables in `docker-compose.yml` file and start 
 sudo docker-compose up -d
 ```
 
-You can copy just `docker-compose.yml` without whole repository and use pre build image [`vanym/tcp-hole-puncher`](https://hub.docker.com/r/vanym/tcp-hole-puncher)
+You can copy just `docker-compose.yml` without whole repository and use image [`vanym/tcp-hole-puncher`](https://hub.docker.com/r/vanym/tcp-hole-puncher)
