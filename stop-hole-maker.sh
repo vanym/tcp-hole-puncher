@@ -2,8 +2,6 @@
 
 set -e
 
-DIRSH=$(dirname $(realpath "${BASH_SOURCE[0]}"))
+HOLE_MAKER_PID_FILE="${HOLE_MAKER_PID_FILE:-hole-maker.pid}"
 
-PIDFILE="hole-maker.pid"
-
-start-stop-daemon -K -v -p "${DIRSH}/${PIDFILE}"
+start-stop-daemon -K -v -p "${HOLE_MAKER_PID_FILE}"
