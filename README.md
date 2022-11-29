@@ -71,7 +71,7 @@ TCP_HOLE_PORT=7203 TCP_HOLE_REDIR_PORT=8080 ./start-hole-maker.sh
 
 Handler called by run script when new address appears
 
-Default `handle-address.sh` script put address to address.txt file in script location directory
+Default `handle-address.sh` script put address to address.txt file in working directory
 
 You can change handler by setting `TCP_HOLE_ADDRESS_HANDLER` environment variable
 
