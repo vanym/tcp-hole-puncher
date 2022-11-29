@@ -81,7 +81,7 @@ loop:
 		}
 		var addr net.Addr
 		var checkTime time.Time
-		addr, checkTime, stunerr = stuns.getAddress(ctx, dialer)
+		addr, checkTime, stunerr = stuns.getAddress(ctx, dialer, args.stuns)
 		if stunerr != nil {
 			log.Println("Can't get address", stunerr)
 			continue

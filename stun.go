@@ -17,7 +17,7 @@ import (
 
 type stunsHolder []string
 
-func (h *stunsHolder) getAddress(ctx context.Context, dialer *net.Dialer) (net.Addr, time.Time, error) {
+func (h *stunsHolder) getAddress(ctx context.Context, dialer *net.Dialer, threads uint) (net.Addr, time.Time, error) {
 	n := len(*h)
 	if n == 0 {
 		log.Panicln("empty stuns")
@@ -29,13 +29,12 @@ func (h *stunsHolder) getAddress(ctx context.Context, dialer *net.Dialer) (net.A
 		return addr, t, err
 	}
 	var current atomic.Int32
-	const th = 2
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var addrs []net.Addr
 	bads := make(map[*string]struct{})
 	var lastTime time.Time
-	for range [th]int{} {
+	for ; threads > 0; threads-- {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()

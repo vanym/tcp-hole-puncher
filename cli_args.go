@@ -22,13 +22,14 @@ type appOptions struct {
 	webSocketEchoURLs argStringSlice
 	stunAddresses     argStringSlice
 	bindAddress       string
+	stuns             uint
 	trace             bool
 }
 
 var flagSet *flag.FlagSet
 
 const programName string = "tcp-hole-puncher"
-const version string = "0.2.2"
+const version string = "0.2.3"
 
 var defaultBind = ":7203"
 var defaultWsUrls = [...]string{
@@ -55,6 +56,8 @@ func parseCliArgs() (args appOptions) {
 
 	flagSet.Var(&args.webSocketEchoURLs, "ws-url", "Websocket echo server url (default servers if none provided)\n    \""+strings.Join(defaultWsUrls[:], "\"\n    \"")+"\"")
 	flagSet.Var(&args.stunAddresses, "stun", "Stun server address (default servers if none provided)\n    \""+strings.Join(defaultStuns[:], "\"\n    \"")+"\"")
+
+	flagSet.UintVar(&args.stuns, "stuns", 2, "Number of stuns server used to get address")
 
 	pVersion := flagSet.Bool("version", false, "Print version")
 
